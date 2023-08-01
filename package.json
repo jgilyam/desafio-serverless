@@ -1,7 +1,13 @@
 {
   "devDependencies": {
+    "@types/node": "^20.4.5",
     "esbuild": "^0.14.25",
     "serverless-esbuild": "^1.25.0"
   },
-  "name": "pagos360"
+  "name": "pagos360",
+  "dependencies": {
+    "@types/aws-lambda": "^8.10.119",
+    "aws-sdk": "^2.1425.0",
+    "parse-multipart-data": "^1.5.0"
+  }
 }
