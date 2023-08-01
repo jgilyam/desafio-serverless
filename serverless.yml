@@ -3,17 +3,49 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs16.x
   region: us-east-1
-
+  apiGateway:
+    binaryMediaTypes:
+      - 'multipart/form-data'
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+        - s3:PutObject 
+        - s3:PutObjectAcl
+        - s3:GetObject
+      Resource: "arn:aws:s3:::desafio360/*"
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+        - s3:GetObject
+      Resource: "arn:aws:s3:::desafio360"
+    
 functions:
-  hello:
-    handler: handler.hello
+  listFiles:
+    handler: src/file/infrastructure/lambdas/listFiles.handler
     events:
       - httpApi:
-          path: /
+          path: /files/list
           method: get
-      
+    environment:
+      BUCKET: desafio360
+  uploadFile:
+    handler: src/file/infrastructure/lambdas/uploadFile.handler
+    events:
+      - httpApi:
+          path: /files/upload
+          method: post
+    environment:
+      BUCKET: desafio360
+
+resources:
+  Resources:
+    MyS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: desafio360
 
 plugins:
   - serverless-esbuild
