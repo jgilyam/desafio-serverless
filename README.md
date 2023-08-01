@@ -12,61 +12,92 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 -->
 
 
-# Serverless Framework AWS TypeScript Example
+# Desafio técnico usando serverless framework
 
-This template demonstrates how to deploy a TypeScript function running on AWS Lambda using Serverless Framework. The deployed function does not include any event definitions as well as any kind of persistence (database). For more advanced configurations check out the [examples repo](https://github.com/serverless/examples/) which includes integrations with SQS, DynamoDB or examples of functions that are triggered in `cron`-like manner. For details about configuration of specific `events`, please refer to our [documentation](https://www.serverless.com/framework/docs/providers/aws/events/).
+Info sobre [Serverless framework](https://www.serverless.com/framework/)
+
+## Instrucciones
+### Desarrollar una API Restful:
+- Que permita mediante un método, adjuntar un archivo solo de tipo .csv y almacenarlo en
+un contenedor de tipo Bucket S3.
+- Además desarrollar un método que permita listar todos los archivos del Bucket S3,
+informando fecha de carga y nombre del archivo.
+- Para asegurar este proyecto te pedimos que el mismo sea accesible solo desde el servicio
+API Gateway de AWS y que este implemesnte cualquier tipo de validaciones de acceso que
+creas conveniente.
+- Por último, desarrollar un pequeño test funcional para probar que no se puedan adjuntar
+archivos de otro tipo que no sean .csv. (para este punto te recomendamos que utilices la
+herramienta postman)
+
+### Aclaraciones
+
+No existe ninguna preferencia en cuanto al lenguaje con el cual desarrollar esta actividad.
+Te pedimos que utilices el framework serverless compatible con funciones lambda y que
+el mismo se pueda desplegar en la nube de AWS en la región north virginia.
+
+### Arquitectura para este proyecto
+
+![Arquitectura del proyecto](/assets/img/arquitectura.jpg "Arquitectura del proyecto")
 
 ## Usage
+Se implementarion los siguientes endpoints para resolver el desafio:
 
-### Deployment
+GET https://tu-dominio-aws/files/list
 
-In order to deploy the example, you need to run the following command:
+POST https://tu-dominio-aws/files/upload
 
-```
-$ serverless deploy
-```
+### Endpoint GET files/list
+Este endpoint no recibe paramnetros.
+Responde con el listado de archivos presentes en el Bucket, ademas seagrego una propiedad con una url firmada para poder descargar el archivo.
+La respuesta del endpoint es la siguiente:
 
-After running deploy, you should see output similar to:
-
-```bash
-Deploying aws-node-typescript to stage dev (us-east-1)
-
-✔ Service deployed to stack aws-node-typescript-dev (112s)
-
-functions:
-  hello: aws-node-typescript-dev-hello (806 B)
-```
-
-### Invocation
-
-After successful deployment, you can invoke the deployed function by using the following command:
-
-```bash
-serverless invoke --function hello
+```json
+[
+    {
+        "uploadDate": "2023-07-31T13:27:36.000Z",
+        "filename": "Nombre del archivo.csv",
+        "signedUrl": "https://xxx/Nombre%archivo.csv?",
+    }
+]
 ```
 
-Which should result in response similar to the following:
+### Endpoint POST files/upload
+Este endpoint debe recibir un archivo, el mismo debe ser enviado con un content-type multipart/form-data
+
+En caso de completarse la subida de forma exitosa la respuesta sera de la siguiente manera:
 
 ```json
 {
-    "message": "Go Serverless v3! Your function executed successfully!",
-    "input": {}
+    "signedUrl": "https://xxx/Nombre%archivo.csv?",
+    "link": "https://xxx.s3.amazonaws.com/Nombre del Archivo.csv"
 }
 ```
 
-### Local development
+Solo se permite subir archivos .csv, en caso de intentar enviar un archivo de otro tipo la respuesta sera la siguiente:
 
-You can invoke your function locally by using the following command:
-
-```bash
-serverless invoke local --function hello
-```
-
-Which should result in response similar to the following:
-
-```
+```json
 {
-    "message": "Go Serverless v3! Your function executed successfully!",
-    "input": {}
+    "title": "WrongTypeExcepetion",
+    "status": 400,
+    "detail": "Only text/csv type files are allowed to be uploaded",
+    "instance": "POST /files/upload",
+    "code": "file003"
 }
+```
+## Arquitectura del proyecto.
+Se separo en 3 capas, infra , dominio y aplicacion.
+Se utilizo inyeccion de dependencias mediante contructor, ademas que las funciones se diseñaron para tener una unica responsabilidad apoyandose en los principios SOLID.
+
+Se utilizo la libreria [parse-multipart-data](https://www.npmjs.com/package/parse-multipart-data) para parsear el archivo que viene en multipart/form-data.
+
+Se utlizo el aws-sdk para node, y se encapsulo toda la funcionalidad en un servicio
+
+Se implemento un excpection handler para estandarizar la respuesta de los errores que pudieran producirse en la API. La respuesta esta inspirada en la publicacion [RFC7807](https://www.rfc-editor.org/rfc/rfc7807.html)
+
+### Deployment
+
+Correr el siguiente comando
+
+```
+$ serverless deploy --verbose
 ```
