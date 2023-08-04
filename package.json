@@ -1,13 +1,16 @@
 {
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.4.5",
     "esbuild": "^0.14.25",
+    "serverless-add-api-key": "^4.2.1",
     "serverless-esbuild": "^1.25.0"
   },
   "name": "pagos360",
   "dependencies": {
     "@types/aws-lambda": "^8.10.119",
     "aws-sdk": "^2.1425.0",
+    "jsonwebtoken": "^9.0.1",
     "parse-multipart-data": "^1.5.0"
   }
 }

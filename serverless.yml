@@ -5,10 +5,26 @@ provider:
   name: aws
   runtime: nodejs16.x
   region: us-east-1
+  stage: dev
+  environment:
+    USER_POOL: { Ref: CognitoUserPool }
+    USER_POOL_CLIENT: { Ref: CognitoUserPoolClient }
   apiGateway:
     binaryMediaTypes:
       - 'multipart/form-data'
+  httpApi:    
+    authorizers:
+      customAuthorizer:
+        type: request
+        functionName: authorizerFunc    
   iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - cognito-idp:AdminInitiateAuth
+        - cognito-idp:AdminCreateUser
+        - cognito-idp:AdminSetUserPassword  
+        - cognito-idp:AdminRespondToAuthChallenge
+      Resource: "arn:aws:cognito-idp:us-east-1:389418998357:userpool/us-east-1_MCeRLoRRd"
     - Effect: Allow
       Action:
         - s3:ListBucket
@@ -29,6 +45,8 @@ functions:
       - httpApi:
           path: /files/list
           method: get
+          authorizer:
+            name: customAuthorizer      
     environment:
       BUCKET: desafio360
   uploadFile:
@@ -37,8 +55,18 @@ functions:
       - httpApi:
           path: /files/upload
           method: post
+          authorizer:
+            name: customAuthorizer      
     environment:
       BUCKET: desafio360
+  authorizerFunc:
+    handler: src/auth/auth.handler
+  login:
+    handler: src/auth/login.handler
+    events:
+      - httpApi:
+          path: /login
+          method: post
 
 resources:
   Resources:
@@ -46,6 +74,23 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: desafio360
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:provider.stage}-user-pool
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${self:provider.stage}-user-pool-client
+        UserPoolId:
+          Ref: CognitoUserPool
+        ExplicitAuthFlows:
+          - ADMIN_NO_SRP_AUTH
+        GenerateSecret: false    
 
 plugins:
   - serverless-esbuild
