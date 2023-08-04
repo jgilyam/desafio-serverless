@@ -1,25 +1,22 @@
 import S3, { ListObjectsV2Request } from 'aws-sdk/clients/s3';
 
-
-
 import { FileAddDTO } from "../../domain/file.add.dto";
 import { IFileStorageManager } from "../../domain/file.storage.manager";
 import { FileOutDTO } from '../../domain/file.out.dto';
-import { ObjectList } from 'aws-sdk/clients/backupstorage';
-
-const BUCKET = process.env.BUCKET ?? "";
 
 export class S3Service implements IFileStorageManager{
     s3: S3;
-    constructor(){
+    bucket: string;
+    constructor(bucket: string){
         this.s3 = new S3();
+        this.bucket = bucket;
     }
     upLoadFile = async (file: FileAddDTO): Promise<string> => {
         const {filename, data} = file
 
         await this.s3
         .putObject({
-            Bucket: BUCKET,
+            Bucket: this.bucket,
             Key: filename,
             ACL: 'private',
             Body: data
@@ -30,13 +27,13 @@ export class S3Service implements IFileStorageManager{
         return signedUrl;  
     }
     getUrl = (filename: string): string => {
-        const url = `https://${ BUCKET }.s3.amazonaws.com/${ filename }`
+        const url = `https://${ this.bucket }.s3.amazonaws.com/${ filename }`
         return url;
     }
 
     getSignedUrl = async (key: string) =>{
         const signedUrl = await this.s3.getSignedUrlPromise("getObject", {
-            Bucket: BUCKET,
+            Bucket: this.bucket,
             Key: key,
             Expires:3600,
           });
@@ -46,7 +43,7 @@ export class S3Service implements IFileStorageManager{
     getFiles =  async (name?: string | undefined): Promise<FileOutDTO[]> => {
 
         const options: ListObjectsV2Request = {
-            Bucket: BUCKET
+            Bucket: this.bucket
         }
         const {Contents} =  await this.s3.listObjectsV2(options).promise();
 
