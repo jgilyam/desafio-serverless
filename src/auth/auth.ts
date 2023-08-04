@@ -1,26 +1,15 @@
 import { APIGatewayProxyEventV2,  } from 'aws-lambda';
-import jwt from 'jsonwebtoken';
-import {cognito} from './login'
+import { authController } from './auth.dependencies';
 
 
 
 export const handler = async (event: APIGatewayProxyEventV2) => {
   const routeArn = event["routeArn"];
   try {
-    const {headers} =event
-    const authorization = headers["authorization"];
     
-    if (!authorization) {
-      throw new Error('Authorization header missing');
-    }
-    
-    const token = authorization.split(' ')[1];
-    const data = await cognito.getUser({AccessToken: token}).promise();
-    const { Username } = data
-    
-    // Verificar el rol del usuario o si tiene los permisos adecuados.
+    const user = await authController.authorize(event);
 
-    return generatePolicy(Username, 'Allow', routeArn);
+    return generatePolicy(user, 'Allow', routeArn);
   } catch (error) {
     return generatePolicy('user', 'Deny', routeArn);
   }
