@@ -94,6 +94,11 @@ Se utlizo el aws-sdk para node, y se encapsulo toda la funcionalidad en un servi
 
 Se implemento un excpection handler para estandarizar la respuesta de los errores que pudieran producirse en la API. La respuesta esta inspirada en la publicacion [RFC7807](https://www.rfc-editor.org/rfc/rfc7807.html)
 
+Se implemento autenticacion y autorizacion mediante el servicio de cognito. Con el token de vuelto, solo se valida que el usuario exista en cognito, para poder usar la api. Por el momento no se controlan roles ni permisos.
+Se creo un endpoint de login para que el usuario pueda obtener el token que validad su identidad.
+Con dicho token, es posible consumer los endpoints desarrollados
+
+
 ### Deployment
 
 Correr el siguiente comando
