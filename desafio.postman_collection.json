@@ -1,0 +1,196 @@
+{
+	"info": {
+		"_postman_id": "4da39a02-5cdb-4739-a39d-48ab890f8422",
+		"name": "pago360",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19573925",
+		"_collection_link": "https://galactic-spaceship-198251.postman.co/workspace/supeHeroTest~efbd3eca-e5ee-4ebf-aa2d-cf430f2f3296/collection/19573925-4da39a02-5cdb-4739-a39d-48ab890f8422?action=share&creator=19573925&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "listFiles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJraWQiOiJPNHFcL21yTXJMTzFBYVM0OHhSb3RDbE1NNXRrWk1DRFRwT3I4Mm1lVlBpVT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI0NGU4YjRiOC1hMGExLTcwODctNzM1Yy1lMmEyOWFhYTU5YmIiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9NQ2VSTG9SUmQiLCJjbGllbnRfaWQiOiIybGd0dWZ1aWQ4N3BtaDBlaWNlYm9kMDllYiIsIm9yaWdpbl9qdGkiOiJmMjYyNDUwYS01ZmVlLTQ2ZDktOTE5Mi02ODFlMWRkZGIxMTMiLCJldmVudF9pZCI6ImI4ZWJlMDM3LWJhZWUtNDc2MC1hZDM1LWFkM2M0MDEyNGI2MiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2OTExOTM0NDksImV4cCI6MTY5MTE5NzA0OSwiaWF0IjoxNjkxMTkzNDQ5LCJqdGkiOiI4MWUwYzI3OC00Mjg4LTQ3ZWMtOTdkMC0xZjk4NDYyMzY2YmEiLCJ1c2VybmFtZSI6IjQ0ZThiNGI4LWEwYTEtNzA4Ny03MzVjLWUyYTI5YWFhNTliYiJ9.Ai-28YLL_KHsqcErv7K7qU61mi8IBuodTM7YcZBJfRzMmj_HNI7Ul7IEUtSSlFsPDfA2GJL85aIUvnNNZF8G4bOq7MBc63_O2DGdmOvefBfwLfNRilPWRnQf9rXd1LCIzzC7SJaP45kes_bluCk6pH6BdoqBe48RhntqTGzuZq3mSkp8IvrvLCqLb3KjHaQkjxhN8R2xuzroLLAk7jnk6xJddZiBxAZsMiiJHuZ0Qznh2FkjtveYJIX9hqsh-0Z2_SmFnS0ybt1bGsSpXK8nl0kQWEf4hW0Mn9gPUJPOXypDcRBSXmNhtOn90V9fHVEw7eqb3Z8vKnuJ0JwTCZuW5Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ij1ss3gs1h.execute-api.us-east-1.amazonaws.com/files/list",
+					"protocol": "https",
+					"host": [
+						"ij1ss3gs1h",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"files",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"XXXX\",\r\n    \"password\": \"XXXXXXX\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ij1ss3gs1h.execute-api.us-east-1.amazonaws.com/login",
+					"protocol": "https",
+					"host": [
+						"ij1ss3gs1h",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload .csv",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 200 al adjuntar archivo .csv\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJraWQiOiJPNHFcL21yTXJMTzFBYVM0OHhSb3RDbE1NNXRrWk1DRFRwT3I4Mm1lVlBpVT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI0NGU4YjRiOC1hMGExLTcwODctNzM1Yy1lMmEyOWFhYTU5YmIiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9NQ2VSTG9SUmQiLCJjbGllbnRfaWQiOiIybGd0dWZ1aWQ4N3BtaDBlaWNlYm9kMDllYiIsIm9yaWdpbl9qdGkiOiJmMjYyNDUwYS01ZmVlLTQ2ZDktOTE5Mi02ODFlMWRkZGIxMTMiLCJldmVudF9pZCI6ImI4ZWJlMDM3LWJhZWUtNDc2MC1hZDM1LWFkM2M0MDEyNGI2MiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2OTExOTM0NDksImV4cCI6MTY5MTE5NzA0OSwiaWF0IjoxNjkxMTkzNDQ5LCJqdGkiOiI4MWUwYzI3OC00Mjg4LTQ3ZWMtOTdkMC0xZjk4NDYyMzY2YmEiLCJ1c2VybmFtZSI6IjQ0ZThiNGI4LWEwYTEtNzA4Ny03MzVjLWUyYTI5YWFhNTliYiJ9.Ai-28YLL_KHsqcErv7K7qU61mi8IBuodTM7YcZBJfRzMmj_HNI7Ul7IEUtSSlFsPDfA2GJL85aIUvnNNZF8G4bOq7MBc63_O2DGdmOvefBfwLfNRilPWRnQf9rXd1LCIzzC7SJaP45kes_bluCk6pH6BdoqBe48RhntqTGzuZq3mSkp8IvrvLCqLb3KjHaQkjxhN8R2xuzroLLAk7jnk6xJddZiBxAZsMiiJHuZ0Qznh2FkjtveYJIX9hqsh-0Z2_SmFnS0ybt1bGsSpXK8nl0kQWEf4hW0Mn9gPUJPOXypDcRBSXmNhtOn90V9fHVEw7eqb3Z8vKnuJ0JwTCZuW5Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/jpgil/Downloads/settlement - raffles.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://ij1ss3gs1h.execute-api.us-east-1.amazonaws.com/files/upload",
+					"protocol": "https",
+					"host": [
+						"ij1ss3gs1h",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"files",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload not .csv",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Código de estado 400 al adjuntar archivo no .csv\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJraWQiOiJPNHFcL21yTXJMTzFBYVM0OHhSb3RDbE1NNXRrWk1DRFRwT3I4Mm1lVlBpVT0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI0NGU4YjRiOC1hMGExLTcwODctNzM1Yy1lMmEyOWFhYTU5YmIiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9NQ2VSTG9SUmQiLCJjbGllbnRfaWQiOiIybGd0dWZ1aWQ4N3BtaDBlaWNlYm9kMDllYiIsIm9yaWdpbl9qdGkiOiJmMjYyNDUwYS01ZmVlLTQ2ZDktOTE5Mi02ODFlMWRkZGIxMTMiLCJldmVudF9pZCI6ImI4ZWJlMDM3LWJhZWUtNDc2MC1hZDM1LWFkM2M0MDEyNGI2MiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2OTExOTM0NDksImV4cCI6MTY5MTE5NzA0OSwiaWF0IjoxNjkxMTkzNDQ5LCJqdGkiOiI4MWUwYzI3OC00Mjg4LTQ3ZWMtOTdkMC0xZjk4NDYyMzY2YmEiLCJ1c2VybmFtZSI6IjQ0ZThiNGI4LWEwYTEtNzA4Ny03MzVjLWUyYTI5YWFhNTliYiJ9.Ai-28YLL_KHsqcErv7K7qU61mi8IBuodTM7YcZBJfRzMmj_HNI7Ul7IEUtSSlFsPDfA2GJL85aIUvnNNZF8G4bOq7MBc63_O2DGdmOvefBfwLfNRilPWRnQf9rXd1LCIzzC7SJaP45kes_bluCk6pH6BdoqBe48RhntqTGzuZq3mSkp8IvrvLCqLb3KjHaQkjxhN8R2xuzroLLAk7jnk6xJddZiBxAZsMiiJHuZ0Qznh2FkjtveYJIX9hqsh-0Z2_SmFnS0ybt1bGsSpXK8nl0kQWEf4hW0Mn9gPUJPOXypDcRBSXmNhtOn90V9fHVEw7eqb3Z8vKnuJ0JwTCZuW5Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "filename",
+							"value": "hola",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/jpgil/Downloads/bell (1).png"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://ij1ss3gs1h.execute-api.us-east-1.amazonaws.com/files/upload",
+					"protocol": "https",
+					"host": [
+						"ij1ss3gs1h",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"files",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
